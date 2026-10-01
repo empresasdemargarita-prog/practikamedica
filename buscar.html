@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Búsqueda | Práktika Médica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:"Montserrat",Arial,sans-serif;color:#173d80;background:#fff;overflow-x:hidden}
+img{display:block;max-width:100%}a{text-decoration:none;color:inherit}
+:root{--blue:#123f91;--cyan:#079da7;--borde:#dde5f0}
+.sello{position:fixed;right:24px;bottom:42px;width:118px;z-index:180;display:block;transition:transform .2s;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
+.sello:hover{transform:translateY(-3px)}.sello img{width:100%;height:auto}
+.topbar{background:#eef3fb;border-bottom:1px solid #d8e3f2;position:sticky;top:0;z-index:201}
+.topbar-inner{width:100%;padding:0 60px;height:100px;display:flex;align-items:center;justify-content:center;gap:72px}
+.ti{display:flex;align-items:center;gap:18px;color:#12234d}
+.ti img{width:86px;height:86px;object-fit:contain;flex-shrink:0}
+.lbl{font-size:13px;font-weight:400;color:#5a6a88;display:block;margin-bottom:3px}
+.val{font-size:26px;font-weight:800;color:#002F8A;display:block;letter-spacing:-.3px}
+.val.sm{font-size:19px}.sep{width:1px;height:60px;background:#c5d3e8}
+header{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.07);position:sticky;top:100px;z-index:200}
+.h-inner{width:100%;height:108px;padding:0 48px;display:flex;align-items:center}
+.logo{flex-shrink:0;margin-right:auto}.logo img{height:94px;width:auto}
+nav{display:flex;gap:36px;align-items:center;font-size:13.5px;flex:0 0 auto;margin:0 36px}
+nav a{color:#12234d;padding-bottom:3px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;font-weight:400}
+nav a:hover{color:var(--blue);border-color:var(--blue)}
+.searchbar{display:flex;align-items:center;gap:8px;border:1.5px solid var(--borde);border-radius:24px;padding:10px 20px;font-size:13.5px;color:#8a97b0;width:220px;background:#f8faff;flex-shrink:0}
+.searchbar input{flex:1;border:none;outline:none;background:transparent;font-size:13.5px;color:#173d80;font-family:inherit}
+.searchbar svg{width:15px;height:15px;stroke:var(--blue);stroke-width:2;fill:none;flex-shrink:0}
+.page-hero{background:linear-gradient(120deg,#0b327b 0%,#079da7 100%);padding:36px 5%;text-align:center;color:#fff}
+.page-hero h1{font-size:clamp(22px,3vw,38px);font-weight:900;letter-spacing:-1px;margin-bottom:8px}
+.page-hero p{font-size:14px;opacity:.85}
+.search-grande{display:flex;align-items:center;gap:0;margin:24px auto 0;max-width:600px;background:#fff;border-radius:32px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.15)}
+.search-grande input{flex:1;border:none;outline:none;padding:14px 22px;font-size:15px;font-family:"Montserrat",sans-serif;color:#173d80}
+.search-grande button{background:var(--cyan);border:none;padding:14px 22px;cursor:pointer;display:flex;align-items:center}
+.search-grande button svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.catalog-wrap{padding:24px 5% 64px;max-width:1340px;margin:0 auto}
+.results-count{font-size:13px;color:#7a8faf;margin-bottom:18px;font-weight:500}
+.catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px}
+.prod-card{border:1.5px solid var(--borde);border-radius:18px;background:#fff;overflow:hidden;display:flex;flex-direction:column;transition:transform .22s,box-shadow .22s}
+.prod-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(18,63,145,.11)}
+.prod-img{background:#f0f4fb;height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:16px}
+.prod-img img{max-width:90%;max-height:90%;width:auto;height:auto;object-fit:contain;display:block}
+.prod-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column;gap:8px}
+.prod-cat{font-size:10px;font-weight:700;color:#8fa8cc;text-transform:uppercase;letter-spacing:.6px}
+.prod-sub{font-size:10.5px;font-weight:700;color:var(--cyan);text-transform:uppercase;letter-spacing:.6px}
+.prod-name{font-size:15px;font-weight:800;color:#0d1f4e;line-height:1.25}
+.prod-desc{font-size:12px;color:#5a6a88;line-height:1.55;flex:1}
+.prod-cta{display:inline-flex;align-items:center;gap:6px;color:#fff;font-weight:800;font-size:11.5px;letter-spacing:.3px;border-radius:20px;padding:9px 16px;align-self:flex-start;margin-top:auto;transition:opacity .18s;border:none;font-family:"Montserrat",sans-serif;cursor:pointer;background:#123f91}
+.prod-cta:hover{opacity:.85}.prod-cta svg{width:14px;height:14px;fill:#fff;flex-shrink:0}
+.empty-state{text-align:center;padding:60px 20px;color:#8fa8cc}
+.empty-state p{font-size:15px;font-weight:600;margin-bottom:8px}
+.empty-state a{color:var(--cyan);font-weight:700}
+footer{background:#123f91;color:#fff}
+.fg{display:grid;grid-template-columns:1.4fr 1fr 1fr;max-width:1160px;margin:0 auto;padding:40px 5%}
+.fc{padding:0 36px;border-right:1px solid rgba(255,255,255,.2)}
+.fc:first-child{padding-left:0}.fc:last-child{border:0;padding-right:0}
+.fc h3{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:18px}
+.fb{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.fb img{width:22px;height:22px;object-fit:contain;flex-shrink:0;margin-top:2px;filter:brightness(0) invert(1)}
+.fl{font-size:12px;line-height:1.8;color:rgba(255,255,255,.9)}
+.fr{display:flex;gap:6px}.fl-l{opacity:.7;min-width:110px}.fr a{font-weight:700;color:#fff}
+.fe{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12px;color:rgba(255,255,255,.9)}
+.fe svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.5;flex-shrink:0}.fe a{color:#fff}
+.fd{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.9)}
+.fd img{width:20px;height:20px;flex-shrink:0;margin-top:2px;filter:brightness(0) invert(1)}
+.soc{display:flex;gap:12px;flex-wrap:wrap}
+.soc a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.soc a:hover{transform:scale(1.1)}.soc svg{width:20px;height:20px;fill:#fff}
+.fb-s{background:#1877f2}.ig-s{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+.tt-s{background:#000}.yt-s{background:#ff0000}
+.grupo-band{background:#fff;padding:18px 32px 20px;border-top:1px solid rgba(10,55,130,.10)}
+.grupo-ttl{text-align:center;color:#53698d;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.grupo-logos{width:min(1120px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);align-items:center}
+.grupo-logos a{height:76px;display:flex;align-items:center;justify-content:center;padding:0 28px;border-left:1px solid #e2e7ef}
+.grupo-logos a:first-child{border-left:0}
+.grupo-logos img{max-height:62px;width:auto;object-fit:contain}
+.fbot{text-align:center;border-top:1px solid rgba(255,255,255,.15);padding:14px 5%;font-size:12.5px;opacity:.75}
+.wa-header-btn{display:none}
+@media(max-width:768px){
+  .wa-header-btn{display:flex;align-items:center;justify-content:center;background:#25d366;border-radius:50%;width:44px;height:44px;flex-shrink:0;margin-left:auto}
+  .wa-header-btn svg{width:26px;height:26px;fill:#fff}
+  .topbar{display:none}
+  header{top:0!important}
+  .h-inner{flex-wrap:wrap;height:auto;padding:10px 16px;gap:10px;justify-content:space-between}
+  .logo img{height:70px}nav{display:none}.searchbar{width:100%;order:2}
+  .catalog-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+  .prod-img{height:180px;padding:8px}
+  .fg{grid-template-columns:1fr;padding:28px 24px}
+  .fc{padding:0 0 24px;border-right:0;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:24px}
+  .fc:last-child{border:0;padding-bottom:0;margin-bottom:0}
+  .grupo-logos{grid-template-columns:1fr 1fr}
+  .grupo-logos a{height:60px;padding:8px 12px;border-left:0}
+  .grupo-logos a:nth-child(n+3){border-top:1px solid #e2e7ef}
+  .sello{right:14px;bottom:80px;width:68px}
+}
+  </style>
+</head>
+<body>
+
+<a class="sello" href="https://didakticalaboratorios.com/" target="_blank" rel="noopener">
+  <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788033025/SELLO_GRUPO_DIDAKTICA.png" alt="Grupo Didáktica">
+</a>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="ti" href="https://wa.me/51923386737" target="_blank" rel="noopener">
+      <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787950282/ChatGPT_Image_28_ago_2026_03_51_04_p.m..png" alt="WA">
+      <div><span class="lbl">WhatsApp de Ventas:</span><span class="val">923 386 737</span></div>
+    </a>
+    <div class="sep"></div>
+    <a class="ti" href="mailto:ventas@practikamedica.com">
+      <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787950395/ChatGPT_Image_28_ago_2026_03_53_01_p.m..png" alt="Email">
+      <div><span class="lbl">Escríbenos:</span><span class="val sm">ventas@practikamedica.com</span></div>
+    </a>
+  </div>
+</div>
+
+<header>
+  <div class="h-inner">
+    <a href="index.html" class="logo"><img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989787/lofo_trasnparente.png" alt="Práktika Médica"></a>
+    <a class="wa-header-btn" href="https://wa.me/51923386737" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.523 5.847L.057 23.886l6.204-1.628A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.889 9.889 0 01-5.031-1.378l-.361-.214-3.741.981.999-3.648-.235-.374A9.869 9.869 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106c5.42 0 9.894 4.474 9.894 9.894 0 5.42-4.474 9.894-9.894 9.894z"/></svg>
+    </a>
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="index.html#nosotros">Nosotros</a>
+      <a href="index.html#categorias">Categoría de Productos</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <div class="searchbar">
+      <input id="hSearch" type="text" placeholder="Buscar productos..." autocomplete="off">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <h1 id="titulo-busqueda">Resultados de búsqueda</h1>
+  <p id="subtitulo-busqueda">Buscando en todos los productos...</p>
+  <div class="search-grande">
+    <input id="searchGrande" type="text" placeholder="Buscar productos...">
+    <button id="btnBuscar"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+  </div>
+</section>
+
+<div class="catalog-wrap">
+  <div class="results-count" id="cnt">Buscando...</div>
+  <div class="catalog-grid" id="grid"></div>
+</div>
+
+<footer id="contacto">
+  <div class="fg">
+    <div class="fc">
+      <h3>Contáctanos</h3>
+      <div class="fb">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787898980/Whastapp.png" alt="">
+        <div class="fl">
+          <div class="fr"><span class="fl-l">Ventas Huancayo:</span><a href="https://wa.me/51946165798" target="_blank">946 165 798</a></div>
+          <div class="fr"><span class="fl-l">Ventas Tienda:</span><a href="https://wa.me/51923386737" target="_blank">923 386 737</a></div>
+          <div class="fr"><span class="fl-l">Ventas Provincia:</span><a href="https://wa.me/51938823838" target="_blank">938 823 838</a></div>
+          <div class="fr"><span class="fl-l">Ventas Lima:</span><a href="https://wa.me/51944627306" target="_blank">944 627 306</a></div>
+        </div>
+      </div>
+      <div class="fe"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg><a href="mailto:ventas@practikamedica.com">ventas@practikamedica.com</a></div>
+    </div>
+    <div class="fc">
+      <h3>Dirección</h3>
+      <div class="fd"><img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787898977/ubicacion.png" alt=""><span>Jr. Cañete 564, Interior 41 –<br>Cercado de Lima, Lima, Perú</span></div>
+    </div>
+    <div class="fc">
+      <h3>Síguenos</h3>
+      <div class="soc">
+        <a class="fb-s" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a class="ig-s" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a class="tt-s" href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 106.34 6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>
+        <a class="yt-s" href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="#fff"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="grupo-band">
+    <p class="grupo-ttl">PARTE DEL GRUPO DIDÁKTICA</p>
+    <div class="grupo-logos">
+      <a href="https://didakticalaboratorios.com/" target="_blank" rel="noopener"><img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788032509/logo_didaktica_laboratorios_HD_4x.png" alt="Didáktica Laboratorios"></a>
+      <a href="#"><img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787948481/ChatGPT_Image_28_ago_2026_03_20_43_p.m..png" alt="Herramientas Didákticas"></a>
+      <a href="index.html"><img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989787/lofo_trasnparente.png" alt="Práktika Médica"></a>
+      <a href="#"><img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788031906/Logo_protecci%C3%B3n_segura.png" alt="Protección Segura"></a>
+    </div>
+  </div>
+  <div class="fbot">© 2026 PRACTIKA MÉDICA. Todos los derechos reservados.</div>
+</footer>
+
+<script src="productos_data.js"></script>
+<script>
+const CATEGORIAS = {
+  materialDescartable:  { nombre:"Material Médico Descartable", url:"material-medico-descartable.html" },
+  materialMedico:       { nombre:"Material Médico",             url:"material-medico.html" },
+  mobiliarioClinico:    { nombre:"Mobiliario Clínico",          url:"mobiliario-clinico.html" },
+  simuladoresClinicos:  { nombre:"Simuladores Clínicos",        url:"simuladores-clinicos.html" },
+};
+
+const WA = `<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`;
+const PH = `<svg viewBox="0 0 80 80" fill="none" style="width:56px;height:56px;opacity:.15"><rect width="80" height="80" rx="16" fill="#8fa8cc"/><path d="M18 58l14-20 10 13 7-9 13 16H18z" fill="#8fa8cc"/><circle cx="56" cy="28" r="8" fill="#8fa8cc"/></svg>`;
+
+function buildCard(p, catKey) {
+  const cat = CATEGORIAS[catKey];
+  const img = p.img ? `<img src="${p.img}" alt="${p.nombre}" loading="lazy">` : PH;
+  const wa = `https://wa.me/51923386737?text=Hola%2C%20me%20interesa%20el%20producto%3A%20${encodeURIComponent(p.nombre)}`;
+  return `<div class="prod-card">
+    <div class="prod-img">${img}</div>
+    <div class="prod-body">
+      <div class="prod-cat">${cat.nombre}</div>
+      <div class="prod-sub">${p.subcategoria||''}</div>
+      <div class="prod-name">${p.nombre}</div>
+      <div class="prod-desc">${p.descripcion||''}</div>
+      <a class="prod-cta" href="${wa}" target="_blank" rel="noopener">${WA} CONSULTAR PRECIO</a>
+    </div></div>`;
+}
+
+function buscar(q) {
+  q = q.toLowerCase().trim();
+  const grid = document.getElementById('grid');
+  const cnt = document.getElementById('cnt');
+  if (!q) { grid.innerHTML=''; cnt.textContent=''; return; }
+
+  document.getElementById('titulo-busqueda').textContent = `Resultados para "${q}"`;
+  document.getElementById('subtitulo-busqueda').textContent = 'Buscando en todas las categorías...';
+  document.getElementById('searchGrande').value = q;
+  document.getElementById('hSearch').value = q;
+
+  let resultados = [];
+  for (const [catKey, productos] of Object.entries(PRODUCTOS)) {
+    for (const p of productos) {
+      if (p.nombre.toLowerCase().includes(q) || (p.descripcion||'').toLowerCase().includes(q) || (p.subcategoria||'').toLowerCase().includes(q)) {
+        resultados.push({ p, catKey });
+      }
+    }
+  }
+
+  if (resultados.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><p>No se encontraron productos para "${q}"</p><a href="index.html">← Volver al inicio</a></div>`;
+    cnt.textContent = '0 resultados';
+  } else {
+    grid.innerHTML = resultados.map(({p, catKey}) => buildCard(p, catKey)).join('');
+    cnt.textContent = `${resultados.length} resultado${resultados.length !== 1 ? 's' : ''} para "${q}"`;
+    document.getElementById('subtitulo-busqueda').textContent = `${resultados.length} producto${resultados.length !== 1 ? 's' : ''} encontrado${resultados.length !== 1 ? 's' : ''}`;
+  }
+}
+
+// Leer término de la URL
+const params = new URLSearchParams(window.location.search);
+const q = params.get('q') || '';
+if (q) buscar(q);
+else { document.getElementById('cnt').textContent = 'Escribe algo para buscar'; document.getElementById('subtitulo-busqueda').textContent = 'Busca en todo el catálogo'; }
+
+// Botón buscar
+document.getElementById('btnBuscar').addEventListener('click', () => {
+  const v = document.getElementById('searchGrande').value;
+  if (v) { window.history.pushState({}, '', `?q=${encodeURIComponent(v)}`); buscar(v); }
+});
+document.getElementById('searchGrande').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const v = e.target.value; if (v) { window.history.pushState({}, '', `?q=${encodeURIComponent(v)}`); buscar(v); } }
+});
+document.getElementById('hSearch').addEventListener('keydown', e => {
+  if (e.key === 'Enter') { const v = e.target.value; if (v) window.location.href = `buscar.html?q=${encodeURIComponent(v)}`; }
+});
+</script>
+</body>
+</html>

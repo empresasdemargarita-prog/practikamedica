@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Práktika Médica | Equipos e Insumos Médicos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:"Montserrat",Arial,sans-serif;color:#173d80;background:#fff;overflow-x:hidden}
+    img{display:block;max-width:100%}
+    a{text-decoration:none;color:inherit}
+
+    :root{
+      --blue:#123f91;
+      --blue-dark:#0b327b;
+      --cyan:#079da7;
+      --cyan-dark:#078e98;
+      --borde:#dde5f0;
+    }
+
+    /* ── TOP BAR (igual que Herramientas Didákticas) ── */
+    .topbar{background:#eef3fb;border-bottom:1px solid #d8e3f2;padding:0}
+    .topbar-inner{width:100%;padding:0 60px;height:100px;display:flex;align-items:center;justify-content:center;gap:72px}
+    .topbar-item{display:flex;align-items:center;gap:18px;color:#12234d;text-decoration:none}
+    .topbar-item img{width:86px;height:86px;object-fit:contain;flex-shrink:0}
+    .topbar-item .lbl{font-size:13px;font-weight:400;color:#5a6a88;display:block;margin-bottom:3px}
+    .topbar-item .val{font-size:26px;font-weight:800;color:#002F8A;display:block;letter-spacing:-.3px}
+    .topbar-item .val.email{font-size:19px}
+    .topbar-sep{width:1px;height:60px;background:#c5d3e8}
+
+    /* ── HEADER ── */
+    header{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.07);position:sticky;top:0;z-index:200;padding:0}
+    /* altura ampliada a 108px, align-items:center ya garantiza centrado vertical */
+    header .inner{width:100%;height:108px;padding:0 48px;display:flex;align-items:center;gap:0}
+    .logo{flex-shrink:0;margin-right:auto}
+    .logo img{height:94px;width:auto}
+    nav{display:flex;gap:36px;align-items:center;font-weight:400;font-size:13.5px;flex:0 0 auto;justify-content:center;margin:0 36px}
+    nav a{color:#12234d;padding-bottom:3px;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;font-weight:400}
+    nav a:hover{color:#123f91;border-color:#123f91}
+    .searchbar{display:flex;align-items:center;gap:8px;border:1.5px solid #dde5f0;border-radius:24px;padding:10px 20px;font-size:13.5px;color:#8a97b0;width:220px;background:#f8faff;cursor:pointer;flex-shrink:0}
+    .searchbar input{flex:1;border:none;outline:none;background:transparent;font-size:13.5px;color:#173d80;font-family:inherit}
+    .searchbar svg{width:15px;height:15px;stroke:#123f91;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+    /* ── HERO ── */
+    :root{
+      --hero-dark:#0D2454;
+      --hero-teal:#08A3B3;
+      --hero-vidas:#0596A5;   /* turquesa más profundo */
+      --hero-btn:#0596A5;
+      --hero-bold:#079FAF;    /* "equipar, atender y formar" = mismo tono botón */
+    }
+    .hero{position:relative;width:100%;overflow:hidden;background:#f5f9ff}
+    /* Difuminado blanco sutil — solo detrás del bloque de texto, franja horizontal */
+    .hero::before{
+      content:"";
+      position:absolute;z-index:2;
+      /* franja vertical centrada donde está el texto: ocupa ~60% del alto */
+      top:15%;bottom:15%;
+      left:0;right:0;
+      background:
+        linear-gradient(
+          to right,
+          rgba(255,255,255,.55) 0%,
+          rgba(255,255,255,.30) 22%,
+          rgba(255,255,255,.08) 42%,
+          rgba(255,255,255,0)   56%
+        );
+      pointer-events:none;
+    }
+    .hero > img{width:100%;height:auto;min-height:500px;object-fit:cover;object-position:center;display:block}
+    .hero-copy{
+      position:absolute;z-index:3;
+      left:max(48px,calc((100% - 1500px)/2 + 18px));
+      /* desplazado 60px hacia arriba respecto al centro */
+      top:calc(50% - 50px);
+      transform:translateY(-50%);
+      width:min(560px,40vw);
+      padding-left:6px;
+    }
+    .hero-copy h1{margin:0 0 14px;line-height:1}
+
+    /* SOLUCIONES — 800, ~41px (-5px), azul oscuro */
+    .h-line-sm{
+      display:block;font-weight:800;
+      font-size:clamp(18px,2.2vw,36px);
+      color:var(--hero-dark);
+      letter-spacing:.3px;line-height:.9;
+      white-space:nowrap;
+    }
+    /* QUE PROTEGEN — peso bajado a 800, interletrado levemente más amplio */
+    .h-line-md{
+      display:block;font-weight:800;
+      font-size:clamp(36px,4.5vw,66px);
+      color:var(--hero-teal);
+      letter-spacing:.5px;line-height:.97;
+      white-space:nowrap;
+    }
+    /* VIDAS — peso bajado a 800, interletrado levemente más amplio */
+    .h-line-lg{
+      display:block;font-weight:800;
+      font-size:clamp(45px,5.7vw,81px);
+      color:var(--hero-vidas);
+      letter-spacing:-.5px;line-height:.95;
+      white-space:nowrap;
+    }
+
+    /* Descripción con ícono */
+    .hero-desc{
+      display:flex;align-items:flex-start;gap:10px;
+      margin:16px 0 22px;
+    }
+    .hero-desc img{
+      width:44px;height:44px;
+      object-fit:contain;flex-shrink:0;margin-top:1px;
+    }
+    .hero-desc p{
+      color:#0d1f45;
+      font-size:clamp(13px,1vw,16px);
+      line-height:1.6;font-weight:400;margin:0;
+    }
+    /* "equipar, atender y formar" = mismo color que botón VER PRODUCTOS */
+    .hero-desc p strong{font-weight:700;color:var(--hero-btn)}
+
+    /* Botón */
+    .hero-cta{
+      display:inline-flex;align-items:center;gap:9px;
+      background:var(--hero-btn);color:#fff;
+      font-weight:800;font-size:clamp(13px,1vw,16px);
+      letter-spacing:.4px;border-radius:32px;
+      padding:12px 26px;text-decoration:none;
+      transition:background .2s,transform .15s;
+      box-shadow:0 6px 22px rgba(7,159,175,.38);
+    }
+    .hero-cta:hover{background:#068a98;transform:translateY(-2px)}
+    .hero-cta svg{width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+    /* ── BENEFITS ── */
+    .benefits-wrap{position:relative;z-index:5;margin-top:-30px;padding:0 5%;max-width:1260px;margin-left:auto;margin-right:auto}
+    .benefits{
+      min-height:210px;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      background:#fff;
+      border-radius:20px;
+      box-shadow:0 16px 38px rgba(18,63,145,.09);
+      overflow:hidden;
+      padding:24px 8px 22px;
+      max-width:1260px;
+      margin:0 auto;
+    }
+    .benefit{position:relative;text-align:center;padding:4px 14px 0}
+    .benefit:not(:last-child)::after{content:"";position:absolute;right:0;top:8%;width:1px;height:84%;background:#dfe7f3}
+    .benefit-icon{width:64px;height:72px;margin:0 auto 12px;object-fit:contain}
+    .benefit h3{color:var(--blue-dark);font-size:12.5px;line-height:1.3;font-weight:800;min-height:36px}
+    .benefit p{color:#687da3;font-size:12px;line-height:1.6;max-width:200px;margin:7px auto 0}
+
+    /* ── SECTION TITLE ── */
+    .section-title{text-align:center;color:var(--blue-dark);font-size:34px;line-height:1.2;font-weight:800;margin-bottom:36px}
+    .section-title::after{content:"";display:block;width:58px;height:4px;border-radius:3px;background:var(--cyan);margin:13px auto 0}
+
+    /* ── CATEGORÍAS ── */
+    .categories-section{padding:48px 0 52px}
+    .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+
+    .category-card{
+      border:1.5px solid var(--borde);
+      border-radius:20px;overflow:hidden;background:#fff;
+      display:flex;flex-direction:column;color:#12234d;
+      transition:box-shadow .25s,transform .25s;text-decoration:none;
+    }
+    .category-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(18,63,145,.12)}
+
+    /* Área imagen: contain + aire generoso */
+    .cat-img-area{
+      background:#f0f4fb;
+      height:240px;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+      padding:32px 40px;
+    }
+    .cat-img-area img{
+      max-width:100%;max-height:100%;
+      width:auto;height:auto;
+      object-fit:contain;
+      transform:scale(1.22);
+      transition:transform .3s;
+    }
+    .category-card:hover .cat-img-area img{transform:scale(1.26)}
+    .category-card:nth-child(3) .cat-img-area img{transform:scale(1.40)}
+    .category-card:nth-child(3):hover .cat-img-area img{transform:scale(1.45)}
+
+    /* Cuerpo */
+    .cat-body{
+      padding:18px 20px 20px;
+      display:flex;flex-direction:column;gap:10px;
+      border-top:1px solid var(--borde);flex:1;
+    }
+
+    /* Ícono: PNG nativo sin ningún filter ni fondo */
+    .cat-icon-circle{
+      width:62px;height:62px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;
+      background:transparent;
+    }
+    .cat-icon-circle img{width:62px;height:62px;object-fit:contain;display:block}
+
+    .category-card h3{font-size:17px;font-weight:800;color:#0d1f4e;line-height:1.2;margin:0}
+    .category-card p{font-size:13px;color:#5a6a88;line-height:1.55;margin:0;flex:1}
+
+    .category-button{
+      display:inline-flex;align-items:center;gap:7px;
+      background:var(--blue);color:#fff;
+      font-weight:800;font-size:12px;letter-spacing:.3px;
+      border-radius:20px;padding:10px 18px;
+      align-self:flex-start;transition:opacity .2s;margin-top:auto;
+    }
+    .category-button:hover{opacity:.85}
+    .category-button svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2.5}
+
+    /* Tarjetas 2 y 4: botón cyan */
+    .category-card:nth-child(2) .category-button,
+    .category-card:nth-child(4) .category-button{background:var(--cyan)}
+    /* Tarjeta 3 (Simuladores): botón AZUL */
+
+    /* ── ABOUT ── */
+    .about-section{padding:0 0 48px;scroll-margin-top:108px}
+    .about-box{
+      min-height:395px;border-radius:24px;
+      background:linear-gradient(105deg,#f2f7ff 0%,#f8fbff 100%);
+      display:grid;grid-template-columns:1.06fr .94fr;
+      align-items:center;overflow:hidden;
+      padding:42px 58px 36px;
+    }
+    .about-copy{padding-right:34px}
+    .about-title{color:var(--blue-dark);font-size:34px;line-height:1.2;font-weight:800;margin-bottom:17px}
+    .about-title::after{content:"";display:block;width:48px;height:4px;border-radius:3px;background:var(--cyan);margin-top:12px}
+    .about-copy p{color:#6179a1;font-size:14px;line-height:1.78;margin-bottom:13px}
+    .about-copy strong{color:var(--blue-dark)}
+    .about-visual{
+      display:flex;align-items:center;justify-content:center;flex-direction:column;
+      gap:0;
+    }
+    .about-visual > img{
+      width:min(100%,500px);max-height:300px;
+      object-fit:contain;mix-blend-mode:multiply;
+    }
+    /* "Entregamos a todo el Perú." — diseño con barra lateral cyan */
+    .about-delivery{
+      margin-top:16px;
+      display:flex;align-items:center;gap:14px;
+      background:#fff;
+      border-radius:14px;
+      padding:14px 20px;
+      box-shadow:0 4px 18px rgba(18,63,145,.10);
+      width:100%;
+    }
+    .about-delivery::before{
+      content:"";
+      flex-shrink:0;
+      width:5px;height:48px;
+      background:var(--cyan);
+      border-radius:4px;
+    }
+    .about-delivery-text{
+      display:flex;flex-direction:column;gap:1px;
+    }
+    .about-delivery-label{
+      font-size:11px;font-weight:700;
+      color:var(--cyan);
+      letter-spacing:1.2px;text-transform:uppercase;
+    }
+    .about-delivery-main{
+      font-size:20px;font-weight:800;
+      color:var(--blue-dark);
+      line-height:1.2;
+    }
+
+    /* ── FOOTER (igual que Herramientas Didákticas) ── */
+    footer{background:#123f91;color:#fff}
+    .foot-mobile-contact{display:none;padding-bottom:24px;margin-bottom:24px;border-bottom:1px solid rgba(255,255,255,.2)}
+    .foot-mobile-contact h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
+    .foot-mobile-contact a{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-size:15px;font-weight:700;margin-bottom:10px}
+    .foot-mobile-contact a img{width:32px;height:32px;object-fit:contain;flex-shrink:0}
+    .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;max-width:1160px;margin:0 auto;padding:40px 5%;gap:0}
+    .foot-col{padding:0 36px;border-right:1px solid rgba(255,255,255,.2)}
+    .foot-col:first-child{padding-left:0}
+    .foot-col:last-child{border:0;padding-right:0}
+    .foot-col h3{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:18px;color:#fff}
+    .foot-block{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+    .foot-block img{width:22px;height:22px;object-fit:contain;flex-shrink:0;margin-top:2px;filter:brightness(0) invert(1)}
+    .foot-lines{font-size:12px;line-height:1.8;color:rgba(255,255,255,.9)}
+    .foot-lines .row{display:flex;gap:6px}
+    .foot-lines .lbl{opacity:.7;min-width:110px}
+    .foot-lines .num{font-weight:700}
+    .foot-email-row{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:12px;color:rgba(255,255,255,.9)}
+    .foot-email-row svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.5;flex-shrink:0}
+    .foot-dir{display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.6;color:rgba(255,255,255,.9)}
+    .foot-dir img{width:20px;height:20px;object-fit:contain;flex-shrink:0;margin-top:2px;filter:brightness(0) invert(1)}
+    .socials{display:flex;gap:12px;flex-wrap:wrap}
+    .socials a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform .15s;overflow:hidden;background:#fff}
+    .socials a:hover{transform:scale(1.1)}
+    .socials a.fb{background:#1877f2}
+    .socials a.ig{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fd5949 45%,#d6249f 60%,#285aeb 90%)}
+    .socials a.tt{background:#000}
+    .socials a.yt{background:#ff0000}
+    .socials svg{width:20px;height:20px;fill:#fff}
+    .foot-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.15);padding:14px 5%;font-size:12.5px;opacity:.75}
+
+    /* ── SELLO GRUPO DIDÁKTICA ── */
+    .grupo-didaktica-float{position:fixed;right:24px;bottom:42px;width:118px;z-index:180;display:block;transition:transform .2s ease;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
+    .grupo-didaktica-float:hover{transform:translateY(-3px)}
+    .grupo-didaktica-float img{width:100%;height:auto;display:block;object-fit:contain}
+
+    /* ── FRANJA CORPORATIVA ── */
+    .grupo-footer-band{background:#fff;padding:18px 32px 20px;border-top:1px solid rgba(10,55,130,.10);border-bottom:1px solid rgba(10,55,130,.10)}
+    .grupo-footer-title{margin:0 0 14px;text-align:center;color:#53698d;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+    .grupo-footer-logos{width:min(1120px,100%);margin:0 auto;display:grid;grid-template-columns:1fr 1.55fr 1.35fr 1fr;align-items:center}
+    .grupo-footer-logo-link{height:76px;display:flex;align-items:center;justify-content:center;padding:0 28px;border-left:1px solid #e2e7ef;text-decoration:none}
+    .grupo-footer-logo-link:first-child{border-left:0}
+    .grupo-footer-band img{display:block;width:auto;max-width:100%;height:auto;max-height:62px;object-fit:contain}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px){
+      .categories{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:768px){
+  .sello{display:none!important}
+  }
+@media(max-width:768px){
+      .topbar{display:none}
+      header .inner{flex-wrap:wrap;height:auto;padding:10px 16px;gap:10px;justify-content:space-between}
+      .logo{margin-right:0}.logo img{height:70px}
+      nav{display:none}
+      .searchbar{width:100%;order:2}
+      .hero > img{min-height:360px;object-position:60% center}
+      .hero::after{content:'';position:absolute;top:0;left:0;width:75%;height:100%;background:linear-gradient(to right,rgba(255,255,255,.95) 0%,rgba(255,255,255,.7) 55%,rgba(255,255,255,0) 100%);pointer-events:none;z-index:1}
+      .hero-copy{left:5%;top:calc(35% - 20px);width:55%;position:absolute;z-index:2}
+      .h-line-sm{font-size:clamp(16px,3.2vw,26px)}
+      .h-line-md{font-size:clamp(26px,4.8vw,40px);white-space:normal}
+      .h-line-lg{font-size:clamp(32px,6vw,50px)}
+      .hero-desc img{width:28px;height:28px}
+      .hero-desc p{font-size:11px}
+      .hero-cta{font-size:12px;padding:10px 18px}
+      .benefits{grid-template-columns:repeat(2,1fr);padding:25px 12px;row-gap:25px}
+      .benefit:nth-child(2)::after,.benefit:nth-child(4)::after{display:none}
+      .benefit:last-child{grid-column:1/-1}
+      .categories{grid-template-columns:1fr}
+      .about-section{scroll-margin-top:100px}
+      .about-box{grid-template-columns:1fr;padding:34px 24px}
+      .about-copy{padding-right:0}
+      .about-visual{height:280px}
+      .foot-mobile-contact{display:block}
+      .foot-grid{grid-template-columns:1fr;padding:28px 24px}
+      .foot-col{padding:0 0 24px;border-right:0;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:24px}
+      .foot-col:last-child{border:0;padding-bottom:0;margin-bottom:0}
+      .grupo-didaktica-float{right:14px;bottom:42px;width:82px}
+      .grupo-footer-logos{grid-template-columns:1fr 1fr}
+      .grupo-footer-logo-link{height:60px;padding:8px 12px;border-left:0}
+      .grupo-footer-logo-link:nth-child(n+3){border-top:1px solid #e2e7ef}
+    }
+    @media(max-width:480px){
+      .benefit{grid-column:1/-1}
+      .h-line-sm{font-size:15px;letter-spacing:0}
+      .h-line-md{font-size:22px;letter-spacing:-.5px}
+      .h-line-lg{font-size:28px;letter-spacing:-1px}
+      .hero-desc{margin:10px 0 14px}
+      .hero-desc img{width:22px;height:22px}
+      .hero-desc p{font-size:10px}
+      .hero-cta{font-size:11px;padding:9px 16px}
+    }
+  .sello{position:fixed;right:24px;bottom:42px;width:118px;z-index:180;display:block;transition:transform .2s;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
+.sello:hover{transform:translateY(-3px)}.sello img{width:100%;height:auto}
+
+@media(max-width:768px){
+  .wa-flotante{display:flex;position:fixed;bottom:120px;right:16px;z-index:999;background:#25d366;width:56px;height:56px;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .wa-flotante svg{width:32px;height:32px;fill:#fff}
+}
+@media(min-width:769px){.wa-flotante{display:none}}
+.wa-movil{display:none}
+@media(max-width:768px){
+  .sello{display:none!important}
+  .wa-movil{display:flex;align-items:center;justify-content:center;background:#25d366;border-radius:50%;width:48px;height:48px;flex-shrink:0;margin-left:auto;text-decoration:none}
+  .wa-movil svg{width:28px;height:28px;fill:#fff}
+}
+</style>
+</head>
+<body>
+<!-- SELLO -->
+<a class="sello" href="https://didakticalaboratorios.com/" target="_blank" rel="noopener">
+  <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788033025/SELLO_GRUPO_DIDAKTICA.png" alt="Grupo Didáktica">
+</a>
+
+<!-- SELLO GRUPO DIDÁKTICA -->
+<a class="grupo-didaktica-float" href="https://didakticalaboratorios.com/" target="_blank" rel="noopener" aria-label="Grupo Didáktica">
+  <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788033025/SELLO_GRUPO_DIDAKTICA.png" alt="Grupo Didáktica">
+</a>
+
+<!-- TOP BAR -->
+<div class="topbar" id="inicio">
+  <div class="topbar-inner">
+    <a class="topbar-item" href="https://wa.me/51923386737" target="_blank" rel="noopener">
+      <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787950282/ChatGPT_Image_28_ago_2026_03_51_04_p.m..png" alt="WhatsApp">
+      <div><span class="lbl">WhatsApp de Ventas:</span><span class="val">923 386 737</span></div>
+    </a>
+    <div class="topbar-sep"></div>
+    <a class="topbar-item" href="mailto:ventas@practikamedica.com">
+      <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787950395/ChatGPT_Image_28_ago_2026_03_53_01_p.m..png" alt="Email">
+      <div><span class="lbl">Escríbenos:</span><span class="val email">ventas@practikamedica.com</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="inner">
+    <a href="#inicio" class="logo">
+      <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989787/lofo_trasnparente.png" alt="Práktika Médica">
+    </a>
+    <a class="wa-movil" href="https://wa.me/51923386737" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.523 5.847L.057 23.886l6.204-1.628A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.889 9.889 0 01-5.031-1.378l-.361-.214-3.741.981.999-3.648-.235-.374A9.869 9.869 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106c5.42 0 9.894 4.474 9.894 9.894 0 5.42-4.474 9.894-9.894 9.894z"/></svg>
+    </a>
+    
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#categorias">Categoría de Productos</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="searchbar">
+      <input id="hSearch" type="text" placeholder="Buscar productos..." autocomplete="off">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989787/imagen_hero.png" alt="Práktika Médica">
+  <div class="hero-copy">
+    <h1>
+      <span class="h-line-sm">SOLUCIONES</span>
+      <span class="h-line-md">QUE PROTEGEN</span>
+      <span class="h-line-lg">VIDAS</span>
+    </h1>
+    <div class="hero-desc">
+      <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788058241/ChatGPT_Image_29_ago_2026_09_50_23_p.m..png" alt="">
+      <p>Todo lo que necesitas para<br><strong>equipar, atender y formar</strong> en salud.</p>
+    </div>
+    <a class="hero-cta" href="#categorias">
+      <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      VER PRODUCTOS
+    </a>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="benefits-wrap" aria-label="Beneficios">
+  <div class="benefits">
+    <article class="benefit">
+      <img class="benefit-icon" src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989780/icono_equipos_e_insumos_de_calidad.png" alt="">
+      <h3>EQUIPOS E INSUMOS<br>DE CALIDAD</h3>
+      <p>Productos seleccionados bajo estándares médicos para una formación segura y efectiva.</p>
+    </article>
+    <article class="benefit">
+      <img class="benefit-icon" src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989779/icono_soluciones_para_instituciones.png" alt="">
+      <h3>SOLUCIONES PARA<br>INSTITUCIONES</h3>
+      <p>Atendemos a universidades, institutos, hospitales y centros de capacitación.</p>
+    </article>
+    <article class="benefit">
+      <img class="benefit-icon" src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989779/icono_compra_segura.png" alt="">
+      <h3>COMPRA SEGURA</h3>
+      <p>Protegemos tu información y garantizamos transacciones con total confianza.</p>
+    </article>
+    <article class="benefit">
+      <img class="benefit-icon" src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989776/icono_envios_a_todo_el_peru.png" alt="">
+      <h3>ENVÍOS A<br>TODO EL PERÚ</h3>
+      <p>Llegamos a cada rincón del país con rapidez y responsabilidad.</p>
+    </article>
+    <article class="benefit">
+      <img class="benefit-icon" src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989780/icono_asesoria_especializada.png" alt="">
+      <h3>ASESORÍA<br>ESPECIALIZADA</h3>
+      <p>Te acompañamos antes, durante y después de tu compra.</p>
+    </article>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section class="categories-section" id="categorias">
+  <div style="padding:0 5%;max-width:1260px;margin:0 auto">
+    <h2 class="section-title">EXPLORA NUESTRAS CATEGORÍAS</h2>
+    <div class="categories">
+
+      <article class="category-card">
+        <div class="cat-img-area">
+          <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989774/material_medico.png" alt="Material Médico">
+        </div>
+        <div class="cat-body">
+          <div class="cat-icon-circle">
+            <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989775/icono_de_material_medico.png" alt="">
+          </div>
+          <h3>Material Médico</h3>
+          <p>Productos, instrumental y equipos médicos esenciales para la práctica clínica y la formación profesional.</p>
+          <a class="category-button" href="material-medico.html">VER PRODUCTOS <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="category-card">
+        <div class="cat-img-area">
+          <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989774/mobiliario_clinico.png" alt="Mobiliario Clínico">
+        </div>
+        <div class="cat-body">
+          <div class="cat-icon-circle">
+            <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989775/icono_de_mobiliario_medico.png" alt="">
+          </div>
+          <h3>Mobiliario Clínico</h3>
+          <p>Mobiliario funcional y resistente para ambientes de salud y enseñanza clínica.</p>
+          <a class="category-button" href="mobiliario-clinico.html">VER PRODUCTOS <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="category-card">
+        <div class="cat-img-area">
+          <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989774/simuladores_clinicos.png" alt="Simuladores Clínicos">
+        </div>
+        <div class="cat-body">
+          <div class="cat-icon-circle">
+            <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989775/icono_de_simuladores_clinicos.png" alt="">
+          </div>
+          <h3>Simuladores Clínicos</h3>
+          <p>Simuladores de alta fidelidad para entrenamientos realistas y seguros.</p>
+          <a class="category-button" href="simuladores-clinicos.html">VER PRODUCTOS <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+      <article class="category-card">
+        <div class="cat-img-area">
+          <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788926471/ChatGPT_Image_8_sept_2026_23_00_58.png" alt="Material Médico Descartable">
+        </div>
+        <div class="cat-body">
+          <div class="cat-icon-circle">
+            <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1790789453/ChatGPT_Image_30_sept_2026_12_30_16_p.m..png" alt="">
+          </div>
+          <h3>Material Médico Descartable</h3>
+          <p>Insumos descartables de calidad para una atención clínica segura.</p>
+          <a class="category-button" href="material-medico-descartable.html">VER PRODUCTOS <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉNES SOMOS -->
+<section class="about-section" id="nosotros">
+  <div style="padding:0 5%;max-width:1260px;margin:0 auto">
+    <div class="about-box">
+      <div class="about-copy">
+        <h2 class="about-title">¿QUIÉNES SOMOS?</h2>
+        <p>En <strong>PRACTIKA MÉDICA</strong> nos dedicamos a ofrecer soluciones integrales en equipos e insumos médicos para la formación, investigación y práctica clínica.</p>
+        <p>Nos enfocamos en brindar productos de alta calidad, innovadores y confiables que contribuyen al aprendizaje significativo y al desarrollo de competencias en el área de la salud.</p>
+        <p>Atendemos a instituciones educativas, centros de salud y profesionales en todo el Perú, con el compromiso de elevar lo mejor de la tecnología médica a sus manos.</p>
+      </div>
+      <div class="about-visual">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989778/quienes_somos.png" alt="Cobertura en todo el Perú">
+        <div class="about-delivery">
+          <div class="about-delivery-text">
+            <span class="about-delivery-label">Cobertura nacional</span>
+            <span class="about-delivery-main">Entregamos a todo el Perú.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto">
+  <div class="foot-grid">
+    <div class="foot-mobile-contact">
+      <h3>Contáctanos</h3>
+      <a href="https://wa.me/51923386737" target="_blank">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787950282/ChatGPT_Image_28_ago_2026_03_51_04_p.m..png" alt="WA">923 386 737
+      </a>
+      <a href="mailto:ventas@practikamedica.com">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787950395/ChatGPT_Image_28_ago_2026_03_53_01_p.m..png" alt="Email">ventas@practikamedica.com
+      </a>
+    </div>
+    <div class="foot-col">
+      <h3>Contáctanos</h3>
+      <div class="foot-block">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787898980/Whastapp.png" alt="WA">
+        <div class="foot-lines">
+          <div class="row"><span class="lbl">Ventas Huancayo:</span><span class="num"><a href="https://wa.me/51946165798" target="_blank" style="color:inherit">946 165 798</a></span></div>
+          <div class="row"><span class="lbl">Ventas Tienda:</span><span class="num"><a href="https://wa.me/51923386737" target="_blank" style="color:inherit">923 386 737</a></span></div>
+          <div class="row"><span class="lbl">Ventas Provincia:</span><span class="num"><a href="https://wa.me/51938823838" target="_blank" style="color:inherit">938 823 838</a></span></div>
+          <div class="row"><span class="lbl">Ventas Lima:</span><span class="num"><a href="https://wa.me/51944627306" target="_blank" style="color:inherit">944 627 306</a></span></div>
+        </div>
+      </div>
+      <div class="foot-email-row">
+        <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+        <a href="mailto:ventas@practikamedica.com" style="color:inherit">ventas@practikamedica.com</a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h3>Dirección</h3>
+      <div class="foot-dir">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787898977/ubicacion.png" alt="">
+        <span>Jr. Cañete 564, Interior 41 –<br>Cercado de Lima, Lima, Perú</span>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h3>Síguenos</h3>
+      <div class="socials">
+        <a class="fb" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a class="ig" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        <a class="tt" href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 106.34 6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg></a>
+        <a class="yt" href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="#fff"><path d="M23.495 6.205a3.007 3.007 0 00-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 00.527 6.205a31.247 31.247 0 00-.522 5.805 31.247 31.247 0 00.522 5.783 3.007 3.007 0 002.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 002.088-2.088 31.247 31.247 0 00.5-5.783 31.247 31.247 0 00-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRANJA CORPORATIVA -->
+  <section class="grupo-footer-band" aria-label="Grupo Didáktica">
+    <h3 class="grupo-footer-title">PARTE DEL GRUPO DIDÁKTICA</h3>
+    <div class="grupo-footer-logos">
+      <a class="grupo-footer-logo-link" href="https://didakticalaboratorios.com/" target="_blank" rel="noopener">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788032509/logo_didaktica_laboratorios_HD_4x.png" alt="Didáktica Laboratorios" style="max-height:61px">
+      </a>
+      <a class="grupo-footer-logo-link" href="#" aria-label="Herramientas Didákticas">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787948481/ChatGPT_Image_28_ago_2026_03_20_43_p.m..png" alt="Herramientas Didákticas" style="max-height:62px">
+      </a>
+      <a class="grupo-footer-logo-link" href="#inicio" aria-label="Práktika Médica">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989787/lofo_trasnparente.png" alt="Práktika Médica" style="max-height:59px">
+      </a>
+      <a class="grupo-footer-logo-link" href="#" aria-label="Protección Segura">
+        <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788031906/Logo_protecci%C3%B3n_segura.png" alt="Protección Segura" style="max-height:60px">
+      </a>
+    </div>
+  </section>
+
+  <div class="foot-bottom">© 2026 PRACTIKA MÉDICA. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+document.getElementById('hSearch').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && this.value.trim()) {
+    window.location.href = 'buscar.html?q=' + encodeURIComponent(this.value.trim());
+  }
+});
+document.querySelector('.searchbar svg').addEventListener('click', function() {
+  const v = document.getElementById('hSearch').value.trim();
+  if (v) window.location.href = 'buscar.html?q=' + encodeURIComponent(v);
+});
+</script>
+</body>
+</html>
