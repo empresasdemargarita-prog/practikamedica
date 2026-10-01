@@ -73,8 +73,8 @@
     .hero-copy{
       position:absolute;z-index:3;
       left:max(48px,calc((100% - 1500px)/2 + 18px));
-      /* desplazado 60px hacia arriba respecto al centro */
-      top:calc(50% - 50px);
+      /* desplazado ligeramente hacia abajo */
+      top:calc(50% - 10px);
       transform:translateY(-50%);
       width:min(560px,40vw);
       padding-left:6px;
@@ -84,7 +84,7 @@
     /* SOLUCIONES — 800, ~41px (-5px), azul oscuro */
     .h-line-sm{
       display:block;font-weight:800;
-      font-size:clamp(18px,2.2vw,36px);
+      font-size:clamp(22px,2.8vw,52px);
       color:var(--hero-dark);
       letter-spacing:.3px;line-height:.9;
       white-space:nowrap;
@@ -92,15 +92,15 @@
     /* QUE PROTEGEN — peso bajado a 800, interletrado levemente más amplio */
     .h-line-md{
       display:block;font-weight:800;
-      font-size:clamp(36px,4.5vw,66px);
+      font-size:clamp(42px,5.2vw,76px);
       color:var(--hero-teal);
-      letter-spacing:.5px;line-height:.97;
+      letter-spacing:0px;line-height:.97;
       white-space:nowrap;
     }
     /* VIDAS — peso bajado a 800, interletrado levemente más amplio */
     .h-line-lg{
       display:block;font-weight:800;
-      font-size:clamp(45px,5.7vw,81px);
+      font-size:clamp(54px,6.8vw,92px);
       color:var(--hero-vidas);
       letter-spacing:-.5px;line-height:.95;
       white-space:nowrap;
@@ -117,7 +117,7 @@
     }
     .hero-desc p{
       color:#0d1f45;
-      font-size:clamp(13px,1vw,16px);
+      font-size:clamp(14px,1.1vw,18px);
       line-height:1.6;font-weight:400;margin:0;
     }
     /* "equipar, atender y formar" = mismo color que botón VER PRODUCTOS */
@@ -127,7 +127,7 @@
     .hero-cta{
       display:inline-flex;align-items:center;gap:9px;
       background:var(--hero-btn);color:#fff;
-      font-weight:800;font-size:clamp(13px,1vw,16px);
+      font-weight:800;font-size:clamp(14px,1.1vw,18px);
       letter-spacing:.4px;border-radius:32px;
       padding:12px 26px;text-decoration:none;
       transition:background .2s,transform .15s;
@@ -327,17 +327,13 @@
     }
 
     @media(max-width:768px){
-  .sello{display:none!important}
-  }
-@media(max-width:768px){
       .topbar{display:none}
-      header .inner{flex-wrap:wrap;height:auto;padding:10px 16px;gap:10px;justify-content:space-between}
+      header .inner{flex-wrap:wrap;height:auto;padding:10px 16px;gap:10px;justify-content:center}
       .logo{margin-right:0}.logo img{height:70px}
       nav{display:none}
       .searchbar{width:100%;order:2}
       .hero > img{min-height:360px;object-position:60% center}
-      .hero::after{content:'';position:absolute;top:0;left:0;width:75%;height:100%;background:linear-gradient(to right,rgba(255,255,255,.95) 0%,rgba(255,255,255,.7) 55%,rgba(255,255,255,0) 100%);pointer-events:none;z-index:1}
-      .hero-copy{left:5%;top:calc(35% - 20px);width:55%;position:absolute;z-index:2}
+      .hero-copy{left:5%;top:calc(50% - 20px);width:50%}
       .h-line-sm{font-size:clamp(16px,3.2vw,26px)}
       .h-line-md{font-size:clamp(26px,4.8vw,40px);white-space:normal}
       .h-line-lg{font-size:clamp(32px,6vw,50px)}
@@ -371,27 +367,9 @@
       .hero-desc p{font-size:10px}
       .hero-cta{font-size:11px;padding:9px 16px}
     }
-  .sello{position:fixed;right:24px;bottom:42px;width:118px;z-index:180;display:block;transition:transform .2s;filter:drop-shadow(0 4px 10px rgba(0,0,0,.18))}
-.sello:hover{transform:translateY(-3px)}.sello img{width:100%;height:auto}
-
-@media(max-width:768px){
-  .wa-flotante{display:flex;position:fixed;bottom:120px;right:16px;z-index:999;background:#25d366;width:56px;height:56px;border-radius:50%;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.25)}
-  .wa-flotante svg{width:32px;height:32px;fill:#fff}
-}
-@media(min-width:769px){.wa-flotante{display:none}}
-.wa-movil{display:none}
-@media(max-width:768px){
-  .sello{display:none!important}
-  .wa-movil{display:flex;align-items:center;justify-content:center;background:#25d366;border-radius:50%;width:48px;height:48px;flex-shrink:0;margin-left:auto;text-decoration:none}
-  .wa-movil svg{width:28px;height:28px;fill:#fff}
-}
-</style>
+  </style>
 </head>
 <body>
-<!-- SELLO -->
-<a class="sello" href="https://didakticalaboratorios.com/" target="_blank" rel="noopener">
-  <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1788033025/SELLO_GRUPO_DIDAKTICA.png" alt="Grupo Didáktica">
-</a>
 
 <!-- SELLO GRUPO DIDÁKTICA -->
 <a class="grupo-didaktica-float" href="https://didakticalaboratorios.com/" target="_blank" rel="noopener" aria-label="Grupo Didáktica">
@@ -419,10 +397,6 @@
     <a href="#inicio" class="logo">
       <img src="https://res.cloudinary.com/wtfpl6vg/image/upload/v1787989787/lofo_trasnparente.png" alt="Práktika Médica">
     </a>
-    <a class="wa-movil" href="https://wa.me/51923386737" target="_blank" rel="noopener" aria-label="WhatsApp">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.117 1.523 5.847L.057 23.886l6.204-1.628A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.889 9.889 0 01-5.031-1.378l-.361-.214-3.741.981.999-3.648-.235-.374A9.869 9.869 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106c5.42 0 9.894 4.474 9.894 9.894 0 5.42-4.474 9.894-9.894 9.894z"/></svg>
-    </a>
-    
     <nav>
       <a href="#inicio">Inicio</a>
       <a href="#nosotros">Nosotros</a>
@@ -430,7 +404,7 @@
       <a href="#contacto">Contacto</a>
     </nav>
     <div class="searchbar">
-      <input id="hSearch" type="text" placeholder="Buscar productos..." autocomplete="off">
+      <input type="text" placeholder="Buscar productos..." autocomplete="off">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </div>
   </div>
@@ -644,16 +618,5 @@
   <div class="foot-bottom">© 2026 PRACTIKA MÉDICA. Todos los derechos reservados.</div>
 </footer>
 
-<script>
-document.getElementById('hSearch').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && this.value.trim()) {
-    window.location.href = 'buscar.html?q=' + encodeURIComponent(this.value.trim());
-  }
-});
-document.querySelector('.searchbar svg').addEventListener('click', function() {
-  const v = document.getElementById('hSearch').value.trim();
-  if (v) window.location.href = 'buscar.html?q=' + encodeURIComponent(v);
-});
-</script>
 </body>
 </html>
